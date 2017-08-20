@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+		"http://struts.apache.org/dtds/struts-2.5.dtd">
+
+<struts>
+
+	<constant name="struts.devMode" value="true" />
+	<constant name="struts.xwork.chaining.copyErrors" value="true" />
+
+	<package name="ParameterManageSystem" extends="struts-default">
+
+		<!-- 索引页 -->
+
+		<action name="*">
+			<result>/WEB-INF/pages/index.jsp</result>
+		</action>
+		
+		<action name="index">
+			<result>/WEB-INF/pages/index.jsp</result>
+		</action>
+
+		<!-- 首页 -->
+		<action name="home">
+			<result>/WEB-INF/pages/home.jsp</result>
+		</action>
+
+	</package>
+	
+	<package name="DBParameterEditor" extends="struts-default" namespace="/db">
+		<action name="dbStructEditor" class="com.parammgr.action.DBStructEditorAction">
+			<result>/WEB-INF/pages/db/structEditor.jsp</result>
+		</action>
+	</package>
+	
+</struts>
