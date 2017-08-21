@@ -16,16 +16,14 @@
 		<!--设置数据库的连接url:jdbc:mysql://localhost/hibernate,其中localhost表示mysql服务器名称，此处为本机， 
 			hibernate是数据库名 -->
 		<property name="hibernate.connection.url">
-			jdbc:mysql://localhost/please
+			jdbc:mysql://localhost/param_manage_system
 		</property>
 		<!--连接数据库是用户名 -->
 		<property name="hibernate.connection.username">root</property>
 		<!--连接数据库是密码 -->
 		<property name="hibernate.connection.password"></property>
 
-		<mapping resource="com/duckyli/please/models/User.hbm.xml" />
-		<mapping resource="com/duckyli/please/models/UserType.hbm.xml" />
-
+		<mapping resource="com/parammgr/db/dao/Project.hbm.xml" />
 	</session-factory>
 
 </hibernate-configuration>

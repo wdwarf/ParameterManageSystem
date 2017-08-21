@@ -1,6 +1,10 @@
 package com.parammgr.action;
 
+import java.util.List;
+
 import com.opensymphony.xwork2.ActionSupport;
+import com.parammgr.db.dao.Project;
+import com.parammgr.db.service.impl.ProjectService;
 
 public class DBStructEditorAction extends ActionSupport {
 	/**
@@ -42,6 +46,9 @@ public class DBStructEditorAction extends ActionSupport {
 
 	@Override
 	public String execute() {
+		ProjectService ps = new ProjectService();
+		List<Project>projects = ps.getAllProjects();
+		System.out.println(projects.size());
 		return ActionSupport.SUCCESS;
 	}
 }
