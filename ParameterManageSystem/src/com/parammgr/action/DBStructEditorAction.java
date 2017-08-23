@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.parammgr.db.dao.Project;
+import com.parammgr.db.service.IProjectService;
 import com.parammgr.db.service.impl.ProjectService;
 
 public class DBStructEditorAction extends ActionSupport {
@@ -15,6 +16,7 @@ public class DBStructEditorAction extends ActionSupport {
 	private String structName;
 	private String editType;
 	private int structId = 0;
+	private IProjectService projectService;
 
 	public String getStructName() {
 		return structName;
@@ -44,10 +46,17 @@ public class DBStructEditorAction extends ActionSupport {
 		return serialVersionUID;
 	}
 
+	public IProjectService getProjectService() {
+		return projectService;
+	}
+
+	public void setProjectService(IProjectService projectService) {
+		this.projectService = projectService;
+	}
+
 	@Override
 	public String execute() {
-		ProjectService ps = new ProjectService();
-		List<Project>projects = ps.getAllProjects();
+		List<Project>projects = this.getProjectService().getAllProjects();
 		System.out.println(projects.size());
 		return ActionSupport.SUCCESS;
 	}

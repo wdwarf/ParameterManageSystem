@@ -3,10 +3,10 @@ package com.parammgr.db.dao;
 import java.util.Date;
 
 public class Project {
-	private String projectId;
-	private 	String projectName;
-	private String comment;
-	private Date createDate;
+	private String projectId = "";
+	private 	String projectName = "";
+	private String comment = "";
+	private Date createDate = new Date();
 	
 	public String getProjectId() {
 		return projectId;

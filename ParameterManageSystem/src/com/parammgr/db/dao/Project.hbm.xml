@@ -5,15 +5,15 @@
 
 <hibernate-mapping>
 
-    <class name="com.parammgr.db.dao.Project" table="project">
+    <class name="com.parammgr.db.dao.Project" table="Project">
         <cache usage="read-write"/>
-        <id name="projectId" column="project_id">
+        <id name="projectId">
             <generator class="uuid"/>
         </id>
         
-        <property name="projectName" column="project_name"/>
+        <property name="projectName"/>
         <property name="comment"/>
-        <property name="createDate" column="create_date"/>
+        <property name="createDate"/>
     </class>
 
 </hibernate-mapping>

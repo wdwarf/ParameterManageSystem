@@ -7,7 +7,8 @@
 
 	<constant name="struts.devMode" value="true" />
 	<constant name="struts.xwork.chaining.copyErrors" value="true" />
-
+    <constant name="struts.objectFactory" value="spring" />
+    
 	<package name="ParameterManageSystem" extends="struts-default">
 
 		<!-- 索引页 -->
@@ -28,7 +29,7 @@
 	</package>
 	
 	<package name="DBParameterEditor" extends="struts-default" namespace="/db">
-		<action name="dbStructEditor" class="com.parammgr.action.DBStructEditorAction">
+		<action name="dbStructEditor" class="dbStructEditorAction">
 			<result>/WEB-INF/pages/db/structEditor.jsp</result>
 		</action>
 	</package>

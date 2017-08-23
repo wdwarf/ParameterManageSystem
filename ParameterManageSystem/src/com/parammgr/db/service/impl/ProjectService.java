@@ -1,5 +1,6 @@
 package com.parammgr.db.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -10,8 +11,15 @@ import com.parammgr.db.service.IProjectService;
 
 public class ProjectService implements IProjectService {
 
-	private org.hibernate.SessionFactory sessionFactory = SessionFactory.createSessionFactory();
-	private Session session = sessionFactory.openSession();
+	private org.hibernate.SessionFactory sessionFactory;
+	private Session session;
+	
+	public ProjectService() {
+		sessionFactory = SessionFactory.createSessionFactory();
+		if(null != sessionFactory) {
+			session = sessionFactory.openSession();
+		}
+	}
 
 	@Override
 	public void finalize() {
@@ -71,6 +79,7 @@ public class ProjectService implements IProjectService {
 
 	@Override
 	public List<Project> getAllProjects() {
+		if(null == session) return new ArrayList<Project>();
 		List<Project> projects = session.createQuery("from Project").getResultList();
 		return projects;
 	}

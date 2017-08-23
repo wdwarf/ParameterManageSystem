@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- services -->
+	<bean name="projectService" class="com.parammgr.db.service.impl.ProjectService">
+	</bean>
+
+	<!-- actions -->
+	<bean name="dbStructEditorAction" class="com.parammgr.action.DBStructEditorAction">
+		<property name="projectService" ref="projectService">
+		</property>
+	</bean>
+
+</beans>
