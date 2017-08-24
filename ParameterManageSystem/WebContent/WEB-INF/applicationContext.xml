@@ -1,11 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans.xsd">
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.3.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+	<context:property-placeholder location="classpath:jdbc.properties"
+		file-encoding="utf-8" ignore-unresolvable="true" />
+
+	<!-- 配置数据源 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close" p:driverClass="${jdbc.driverClassName}"
+		p:jdbcUrl="${jdbc.url}" p:user="${jdbc.username}" p:password="${jdbc.password}"
+		p:testConnectionOnCheckout="${jdbc.c3p0.testConnectionOnCheckout}"
+		p:testConnectionOnCheckin="${jdbc.c3p0.testConnectionOnCheckin}"
+		p:idleConnectionTestPeriod="${jdbc.c3p0.idleConnectionTestPeriod}"
+		p:initialPoolSize="${jdbc.c3p0.initialPoolSize}" p:minPoolSize="${jdbc.c3p0.minPoolSize}"
+		p:maxPoolSize="${jdbc.c3p0.maxPoolSize}" p:maxIdleTime="${jdbc.c3p0.maxIdleTime}" />
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean"
+		lazy-init="false">
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan">
+			<list>
+				<value>com.parammgr.db.dao</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+				<prop key="hibernate.temp.use_jdbc_metadata_defaults">${hibernate.use_jdbc_metadata_defaults}</prop>
+				<prop key="hibernate.cache.region.factory_class">${hibernate.factory_class}</prop>
+				<prop key="hibernate.cache.use_second_level_cache">${hibernate.use_second_level_cache}</prop>
+			</props>
+		</property>
+		<property name="mappingLocations" value="classpath:com/parammgr/db/dao/*.hbm.xml"></property>
+		<!-- <property name="configLocation" value="classpath:hibernate.cfg.xml"></property> 
+			<property name="mappingLocations" value="classpath:com/parammgr/db/dao/*.hbm.xml"></property> -->
+	</bean>
+	<!-- 事务 -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<!-- 事务属性 -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="*" />
+		</tx:attributes>
+	</tx:advice>
+	<!-- 配置事务切点 -->
+	<aop:config>
+		<aop:pointcut expression="execution(* com.parammgr.db.service.*.*(..))"
+			id="txPointcut" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut" />
+	</aop:config>
+
+
 
 	<!-- services -->
 	<bean name="projectService" class="com.parammgr.db.service.impl.ProjectService">
+		<property name="sessionFactory" ref="sessionFactory">
+		</property>
 	</bean>
 
 	<!-- actions -->

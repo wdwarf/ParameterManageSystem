@@ -1,6 +1,8 @@
 package com.parammgr.db.dao;
 
-public class DBStructPK {
+import java.io.Serializable;
+
+public class DBStructPK implements Serializable{
 	private String projectId = "";
 	private int structId = 0;
 	

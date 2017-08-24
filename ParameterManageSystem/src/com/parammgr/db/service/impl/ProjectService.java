@@ -1,38 +1,18 @@
 package com.parammgr.db.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
-import com.parammgr.db.SessionFactory;
 import com.parammgr.db.dao.Project;
 import com.parammgr.db.service.IProjectService;
 
 public class ProjectService implements IProjectService {
-
-	private org.hibernate.SessionFactory sessionFactory;
-	private Session session;
+	private SessionFactory sessionFactory;
 	
-	public ProjectService() {
-		sessionFactory = SessionFactory.createSessionFactory();
-		if(null != sessionFactory) {
-			session = sessionFactory.openSession();
-		}
-	}
-
-	@Override
-	public void finalize() {
-		try {
-			session.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	@Override
 	public Project getProjectById(String projectId) {
-		List<Project> projects = session.createQuery("from Project where project_id=:projectId").setParameter("projectId", projectId)
+		List<Project> projects = sessionFactory.openSession().createQuery("from Project where project_id=:projectId").setParameter("projectId", projectId)
 				.getResultList();
 
 		if (!projects.isEmpty()) {
@@ -79,9 +59,16 @@ public class ProjectService implements IProjectService {
 
 	@Override
 	public List<Project> getAllProjects() {
-		if(null == session) return new ArrayList<Project>();
-		List<Project> projects = session.createQuery("from Project").getResultList();
+		List<Project> projects = sessionFactory.openSession().createQuery("from Project").getResultList();
 		return projects;
+	}
+
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
+
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
 	}
 
 }
