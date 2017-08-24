@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="com.parammgr.db.dao.DBStruct" table="DBStruct">
+		<cache usage="read-write" />
+		<composite-id name="primaryKey" class="com.parammgr.db.dao.DBStructPK">
+			<key-property name="projectId" column="projectId" type="string"></key-property>
+			<key-property name="structId" column="structId" type="int"></key-property>
+		</composite-id>
+
+		<property name="structName" />
+		<property name="tempTable" />
+		<property name="createDate" />
+	</class>
+
+</hibernate-mapping>
