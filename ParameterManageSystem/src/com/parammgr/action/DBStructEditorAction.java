@@ -3,9 +3,8 @@ package com.parammgr.action;
 import java.util.List;
 
 import com.opensymphony.xwork2.ActionSupport;
-import com.parammgr.db.dao.Project;
+import com.parammgr.db.entity.Project;
 import com.parammgr.db.service.IProjectService;
-import com.parammgr.db.service.impl.ProjectService;
 
 public class DBStructEditorAction extends ActionSupport {
 	/**
@@ -56,8 +55,10 @@ public class DBStructEditorAction extends ActionSupport {
 
 	@Override
 	public String execute() {
-		List<Project>projects = this.getProjectService().getAllProjects();
-		System.out.println(projects.size());
+		Project project = this.getProjectService().getProjectById("142129c1-8798-11e7-8482-525400bbd1a8");
+		System.out.println(project.getProjectName());
+		project.setProjectName("prjName0");
+		this.projectService.updateProject(project);
 		return ActionSupport.SUCCESS;
 	}
 }

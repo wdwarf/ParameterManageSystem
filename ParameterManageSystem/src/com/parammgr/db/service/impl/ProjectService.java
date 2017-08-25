@@ -2,73 +2,58 @@ package com.parammgr.db.service.impl;
 
 import java.util.List;
 
-import org.hibernate.SessionFactory;
-
-import com.parammgr.db.dao.Project;
+import com.parammgr.db.dao.IProjectDao;
+import com.parammgr.db.entity.Project;
 import com.parammgr.db.service.IProjectService;
 
 public class ProjectService implements IProjectService {
-	private SessionFactory sessionFactory;
-	
-	@Override
-	public Project getProjectById(String projectId) {
-		List<Project> projects = sessionFactory.openSession().createQuery("from Project where project_id=:projectId").setParameter("projectId", projectId)
-				.getResultList();
+	private IProjectDao projectDao;
 
-		if (!projects.isEmpty()) {
-			return projects.get(0);
-		}
-		return null;
+	public IProjectDao getProjectDao() {
+		return projectDao;
 	}
 
-	@Override
-	public Project getProjectByName(String projectName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void addProject(Project project) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void deleteProject(Project project) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void deleteProjectById(String projectId) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void deleteProjectByName(String projectName) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void updateProject(Project project) {
-		// TODO Auto-generated method stub
-		
+	public void setProjectDao(IProjectDao projectDao) {
+		this.projectDao = projectDao;
 	}
 
 	@Override
 	public List<Project> getAllProjects() {
-		List<Project> projects = sessionFactory.openSession().createQuery("from Project").getResultList();
-		return projects;
+		return this.projectDao.getAllProjects();
 	}
 
-	public SessionFactory getSessionFactory() {
-		return sessionFactory;
+	@Override
+	public Project getProjectById(String projectId) {
+		return this.projectDao.getProjectById(projectId);
 	}
 
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
+	@Override
+	public Project getProjectByName(String projectName) {
+		return this.projectDao.getProjectByName(projectName);
 	}
 
+	@Override
+	public void addProject(Project project) {
+		this.projectDao.addProject(project);
+	}
+
+	@Override
+	public void deleteProject(Project project) {
+		this.projectDao.deleteProject(project);
+	}
+
+	@Override
+	public void deleteProjectById(String projectId) {
+		this.projectDao.deleteProjectById(projectId);
+	}
+
+	@Override
+	public void deleteProjectByName(String projectName) {
+		this.projectDao.deleteProjectByName(projectName);
+	}
+
+	@Override
+	public void updateProject(Project project) {
+		this.projectDao.updateProject(project);
+	}
 }

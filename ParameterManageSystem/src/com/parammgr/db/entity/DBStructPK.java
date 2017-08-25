@@ -1,4 +1,4 @@
-package com.parammgr.db.dao;
+package com.parammgr.db.entity;
 
 import java.io.Serializable;
 

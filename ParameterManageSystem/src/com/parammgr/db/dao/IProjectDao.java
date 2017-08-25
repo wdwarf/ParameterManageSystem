@@ -1,10 +1,11 @@
-package com.parammgr.db.service;
+package com.parammgr.db.dao;
 
 import java.util.List;
 
 import com.parammgr.db.entity.Project;
 
-public interface IProjectService {
+public interface IProjectDao {
+
 	public List<Project> getAllProjects();
 	public Project getProjectById(String projectId);
 	public Project getProjectByName(String projectName);
