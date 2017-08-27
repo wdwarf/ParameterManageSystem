@@ -2,37 +2,47 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context-4.3.xsd
+        http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/aop
-        http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+        http://www.springframework.org/schema/aop/spring-aop.xsd
         http://www.springframework.org/schema/tx
-        http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+	<mvc:annotation-driven />
+	<context:component-scan base-package="com.parammgr">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Service" />
+	</context:component-scan>
+	<context:component-scan base-package="com.parammgr" />
 
 	<context:property-placeholder location="classpath:jdbc.properties"
 		file-encoding="utf-8" ignore-unresolvable="true" />
 
 	<!-- 配置数据源 -->
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-		destroy-method="close" p:driverClass="${jdbc.driverClassName}"
-		p:jdbcUrl="${jdbc.url}" p:user="${jdbc.username}" p:password="${jdbc.password}"
-		p:testConnectionOnCheckout="${jdbc.c3p0.testConnectionOnCheckout}"
-		p:testConnectionOnCheckin="${jdbc.c3p0.testConnectionOnCheckin}"
-		p:idleConnectionTestPeriod="${jdbc.c3p0.idleConnectionTestPeriod}"
-		p:initialPoolSize="${jdbc.c3p0.initialPoolSize}" p:minPoolSize="${jdbc.c3p0.minPoolSize}"
-		p:maxPoolSize="${jdbc.c3p0.maxPoolSize}" p:maxIdleTime="${jdbc.c3p0.maxIdleTime}" />
+		destroy-method="close">
+		<property name="driverClass" value="${jdbc.driverClassName}" />
+		<property name="jdbcUrl" value="${jdbc.url}" />
+		<property name="user" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="testConnectionOnCheckout" value="${jdbc.c3p0.testConnectionOnCheckout}" />
+		<property name="testConnectionOnCheckin" value="${jdbc.c3p0.testConnectionOnCheckin}" />
+		<property name="idleConnectionTestPeriod" value="${jdbc.c3p0.idleConnectionTestPeriod}" />
+		<property name="initialPoolSize" value="${jdbc.c3p0.initialPoolSize}" />
+		<property name="minPoolSize" value="${jdbc.c3p0.minPoolSize}" />
+		<property name="maxPoolSize" value="${jdbc.c3p0.maxPoolSize}" />
+		<property name="maxIdleTime" value="${jdbc.c3p0.maxIdleTime}" />
+	</bean>
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean"
 		lazy-init="false">
 		<property name="dataSource" ref="dataSource" />
-		<property name="packagesToScan">
-			<list>
-				<value>com.parammgr.db.entity</value>
-			</list>
-		</property>
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
@@ -46,20 +56,23 @@
 		</property>
 		<property name="mappingLocations" value="classpath:com/parammgr/db/entity/*.hbm.xml"></property>
 	</bean>
+
 	<!-- 事务 -->
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
 	</bean>
 	<!-- 事务属性 -->
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
-			<tx:method name="*" propagation="REQUIRED" rollback-for="Exception" read-only="false" />
+			<tx:method name="*" rollback-for="java.lang.Exception" />
 		</tx:attributes>
 	</tx:advice>
 	<!-- 配置事务切点 -->
 	<aop:config>
-		<aop:pointcut expression="execution(* com.parammgr.db.dao.*.*(..))"
+		<aop:pointcut expression="execution(* com.parammgr.db.service.impl.*.*(..))"
 			id="txPointcut" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut" />
 	</aop:config>
@@ -71,11 +84,17 @@
 		<property name="sessionFactory" ref="sessionFactory">
 		</property>
 	</bean>
-	
+	<bean name="dbStructDao" class="com.parammgr.db.dao.impl.DBStructDao">
+		<property name="sessionFactory" ref="sessionFactory">
+		</property>
+	</bean>
+
 	<!-- service -->
 	<bean name="projectService" class="com.parammgr.db.service.impl.ProjectService">
-		<property name="projectDao" ref="projectDao">
-		</property>
+		<property name="projectDao" ref="projectDao" />
+	</bean>
+	<bean name="dbStructService" class="com.parammgr.db.service.impl.DBStructService">
+		<property name="dbStructDao" ref="dbStructDao" />
 	</bean>
 
 	<!-- actions -->

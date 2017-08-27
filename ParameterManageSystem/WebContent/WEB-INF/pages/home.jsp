@@ -22,7 +22,12 @@
 </style>
 <script type="text/javascript" src="<%=basePath%>scripts/jquery/jquery.js"></script> 
 <script type="text/javascript" src="<%=basePath%>scripts/home.js"></script>
+<script type='text/javascript' src='<%=basePath%>dwr/engine.js'></script>  
+<script type='text/javascript' src='<%=basePath%>dwr/interface/projectService.js'></script>
+<script type='text/javascript' src='<%=basePath%>dwr/interface/dbStructService.js'></script>
+<script type="text/javascript">
 
+</script>
 </head>
 <body>
 
@@ -33,16 +38,6 @@
 			</div>
 			<div class="panel-struct-list">
 				<ul class="memu-list" id="projectList">
-					<li><a>D18-BBU</a></li>
-					<li><a>SC-BBU</a></li>
-					<li><a>BTrunc－BBU</a></li>
-					<li><a>1.8G-BBU</a></li>
-					<li><a>1.8G-RRU</a></li>
-					<li><a>1.4G-BBU</a></li>
-					<li><a>1.4G-RRU</a></li>
-					<li><a>微站</a></li>
-					<li><a>Intel双载波</a></li>
-					<li><a>博通双拼</a></li>
 				</ul>
 			</div>
 		</div>

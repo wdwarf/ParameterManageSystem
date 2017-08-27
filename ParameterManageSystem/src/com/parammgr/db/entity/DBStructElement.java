@@ -3,9 +3,7 @@ package com.parammgr.db.entity;
 import java.util.Date;
 
 public class DBStructElement {
-	private String projectId = "";
-	private int structId = 0;
-	private int elementId = 0;
+	private DBStructElementPK pk;
 	private String elementName = "";
 	private String elementType = "";
 	private int elementSize = 0;
@@ -14,24 +12,6 @@ public class DBStructElement {
 	private String valueRegex = "";
 	private Date createDate = new Date();
 	
-	public String getProjectId() {
-		return projectId;
-	}
-	public void setProjectId(String projectId) {
-		this.projectId = projectId;
-	}
-	public int getStructId() {
-		return structId;
-	}
-	public void setStructId(int structId) {
-		this.structId = structId;
-	}
-	public int getElementId() {
-		return elementId;
-	}
-	public void setElementId(int elementId) {
-		this.elementId = elementId;
-	}
 	public String getElementName() {
 		return elementName;
 	}
@@ -73,5 +53,11 @@ public class DBStructElement {
 	}
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
+	}
+	public DBStructElementPK getPk() {
+		return pk;
+	}
+	public void setPk(DBStructElementPK pk) {
+		this.pk = pk;
 	}
 }

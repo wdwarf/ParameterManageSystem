@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="com.parammgr.db.entity.DBStructElement" table="DBStructElement">
+		<cache usage="read-write" />
+		<composite-id name="pk" class="com.parammgr.db.entity.DBStructElementPK">
+			<key-property name="projectId" column="projectId" type="string"></key-property>
+			<key-property name="structId" column="structId" type="int"></key-property>
+			<key-property name="elementId" column="elementId" type="int"></key-property>
+		</composite-id>
+
+		<property name="elementName" />
+		<property name="elementType" />
+		<property name="elementSize" />
+		<property name="primaryKey" />
+		<property name="defaultValue" />
+		<property name="valueRegex" />
+		<property name="createDate" />
+	</class>
+
+</hibernate-mapping>

@@ -8,7 +8,7 @@
     <class name="com.parammgr.db.entity.Project" table="Project">
         <cache usage="read-write"/>
         <id name="projectId">
-            <generator class="uuid"/>
+            <!-- <generator class="String"/> -->
         </id>
         
         <property name="projectName"/>

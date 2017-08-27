@@ -2,11 +2,20 @@ package com.parammgr.db.service.impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.parammgr.db.dao.IProjectDao;
+import com.parammgr.db.dao.impl.ProjectDao;
 import com.parammgr.db.entity.Project;
 import com.parammgr.db.service.IProjectService;
 
+
+//@Service  
+//@Transactional
 public class ProjectService implements IProjectService {
+	//@Autowired
 	private IProjectDao projectDao;
 
 	public IProjectDao getProjectDao() {
@@ -30,6 +39,11 @@ public class ProjectService implements IProjectService {
 	@Override
 	public Project getProjectByName(String projectName) {
 		return this.projectDao.getProjectByName(projectName);
+	}
+	
+	@Override
+	public List<Project> getProjectsByName(String projectName){
+		return this.projectDao.getProjectsByName(projectName);
 	}
 
 	@Override

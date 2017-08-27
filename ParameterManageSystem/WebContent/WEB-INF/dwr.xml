@@ -1,0 +1,26 @@
+<!DOCTYPE dwr PUBLIC
+    "-//GetAhead Limited//DTD Direct Web Remoting 3.0//EN"
+    "http://directwebremoting.org/schema/dwr30.dtd">
+
+<dwr>
+	<allow>
+
+		<create creator="spring" javascript="projectService">
+			<param name="beanName" value="projectService" />
+		</create>
+		<create creator="spring" javascript="dbStructService">
+			<param name="beanName" value="dbStructService" />
+		</create>
+
+		<convert converter="bean" match="com.parammgr.db.entity.Project">
+		</convert>
+		<convert converter="bean" match="com.parammgr.db.entity.DBStructPK">
+		</convert>
+		<convert converter="bean" match="com.parammgr.db.entity.DBStructElementPK">
+		</convert>
+		<convert converter="bean" match="com.parammgr.db.entity.DBStruct">
+		</convert>
+		<convert converter="bean" match="com.parammgr.db.entity.DBStructElement">
+		</convert>
+	</allow>
+</dwr>

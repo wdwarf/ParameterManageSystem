@@ -8,6 +8,7 @@ public interface IProjectService {
 	public List<Project> getAllProjects();
 	public Project getProjectById(String projectId);
 	public Project getProjectByName(String projectName);
+	public List<Project> getProjectsByName(String projectName);
 	public void addProject(Project project);
 	public void deleteProject(Project project);
 	public void deleteProjectById(String projectId);

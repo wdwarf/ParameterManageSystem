@@ -12,7 +12,7 @@ public class ProjectDao implements IProjectDao {
 
 	@Override
 	public Project getProjectById(String projectId) {
-		List<Project> projects = sessionFactory.openSession().createQuery("from Project where projectId=:projectId")
+		List<Project> projects = sessionFactory.getCurrentSession().createQuery("from Project where projectId=:projectId")
 				.setParameter("projectId", projectId).getResultList();
 
 		if (!projects.isEmpty()) {
@@ -23,7 +23,7 @@ public class ProjectDao implements IProjectDao {
 
 	@Override
 	public Project getProjectByName(String projectName) {
-		List<Project> projects = sessionFactory.openSession().createQuery("from Project where projectName=:projectName")
+		List<Project> projects = sessionFactory.getCurrentSession().createQuery("from Project where projectName=:projectName")
 				.setParameter("projectName", projectName).getResultList();
 
 		if (!projects.isEmpty()) {
@@ -31,15 +31,23 @@ public class ProjectDao implements IProjectDao {
 		}
 		return null;
 	}
+	
+	@Override
+	public List<Project> getProjectsByName(String projectName){
+		List<Project> projects = sessionFactory.getCurrentSession().createQuery("from Project where projectName like :projectName")
+				.setParameter("projectName", "%" + projectName + "%").getResultList();
+
+		return projects;
+	}
 
 	@Override
 	public void addProject(Project project) {
-		sessionFactory.openSession().saveOrUpdate(project);
+		sessionFactory.getCurrentSession().save(project);
 	}
 
 	@Override
 	public void deleteProject(Project project) {
-		sessionFactory.openSession().delete(project);
+		sessionFactory.getCurrentSession().delete(project);
 	}
 
 	@Override
@@ -53,18 +61,18 @@ public class ProjectDao implements IProjectDao {
 	public void deleteProjectByName(String projectName) {
 		Project project = this.getProjectByName(projectName);
 		if(null != project) {
-			sessionFactory.openSession().delete(project);
+			sessionFactory.getCurrentSession().delete(project);
 		}
 	}
 
 	@Override
 	public void updateProject(Project project) {
-		sessionFactory.openSession().saveOrUpdate(project);
+		sessionFactory.getCurrentSession().update(project);
 	}
 
 	@Override
 	public List<Project> getAllProjects() {
-		List<Project> projects = sessionFactory.openSession().createQuery("from Project").getResultList();
+		List<Project> projects = sessionFactory.getCurrentSession().createQuery("from Project").getResultList();
 		return projects;
 	}
 
