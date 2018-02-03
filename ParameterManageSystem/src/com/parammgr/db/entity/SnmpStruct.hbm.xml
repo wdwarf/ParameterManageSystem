@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="com.parammgr.db.entity.SnmpStruct" table="SnmpStruct">
+		<cache usage="read-write" />
+		<id name="snmpstructId">
+			<generator class="uuid"/>
+		</id>
+
+		<property name="projectId" />
+		<property name="structName" />
+		<property name="oid" />
+		<property name="singleTable" />
+		<property name="createDate" />
+
+		<set name="members" lazy="false" inverse="true" cascade="all" order-by="oid ASC">
+			<key>
+				<column name="snmpstructId" />
+			</key>
+			<one-to-many class="com.parammgr.db.entity.SnmpStructMember" />
+		</set>
+	</class>
+
+</hibernate-mapping>

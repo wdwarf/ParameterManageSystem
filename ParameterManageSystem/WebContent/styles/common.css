@@ -7,11 +7,19 @@
 
 html, body {
 	background-color: white;
-	font-family: System, 微软雅黑, Arial;
-	font-size: 14px;
+	font-family: Arial, System, "Microsoft YaHei", 微软雅黑;
 	margin: 0px;
 	padding: 0px;
 	height: 100%;
+	font-size: 14px;
+}
+
+html, body *{
+	font-family: Arial, System, "Microsoft YaHei", 微软雅黑;
+}
+
+a{
+	text-decoration: none;
 }
 
 .tbCommon {
@@ -21,13 +29,31 @@ html, body {
 	border: 1px black solid;
 	column-width: 0px;
 	border-collapse: collapse;
+	position: relative;
+}
+
+.tbCommon .tbRowNum {
+	background-color: #aee3fb;
+	background: -webkit-gradient(linear, 0 0, 0 bottom, from(#efffff), to(#aee3fb));
+	background: -moz-linear-gradient(top, #efffff, #aee3fb);
+	background: -o-linear-gradient(top, #efffff, #aee3fb);
+}
+
+.tbCommon thead {
+	background-color: #aee3fb;
+	background: -webkit-gradient(linear, 0 0, 0 bottom, from(#efffff), to(#9ed3eb));
+	background: -moz-linear-gradient(top, #efffff, #aee3fb);
+	background: -o-linear-gradient(top, #efffff, #aee3fb);
+	background: -ms-linear-gradient(top, #efffff, #aee3fb);
+	background: linear-gradient(top, #efffff, #aee3fb);
 }
 
 .tbCommon th {
-	background-color: #88bbee;
-	color: #000000;
-	border: 1px black solid;
+	border: 1px #6a6a6a solid;
 	line-height: 28px;
+	margin: 0px;
+	padding: 0px 1px;
+	white-space: nowrap;
 }
 
 .tbCommon tr {
@@ -35,7 +61,7 @@ html, body {
 }
 
 .tbCommon td {
-	border: 1px gray solid;
+	border: 1px #c0c0c0 solid;
 	line-height: 24px;
 	height: 24px;
 	padding: 0px;
@@ -46,20 +72,11 @@ html, body {
 	background-color: #ddf0ff;
 }
 
-input[type=checkbox] {
-	border: 0px;
-	padding: 0px;
-	margin: 0px;
-	width: 100%;
-	line-height: 28px;
-	background-color: transparent;
-}
-
 .striped {
 	background-color: #f9f9ff;
 }
 
-select {
+.tbCommon select {
 	border: 0px;
 	appearance: none;
 	-moz-appearance: none;
@@ -67,22 +84,28 @@ select {
 	background: transparent;
 }
 
-select:hover {
+.tbCommon select:hover {
 	background: url("../images/arrow.png") no-repeat scroll right center;
 }
 
 .button {
     background-color: #3465a4;
+    background: -webkit-gradient(linear, 0 0, 0 bottom, from(#6fafff), to(#3465a4));
+    background: -webkit-linear-gradient(top, #6fafef, #3465a4);
+	background: -moz-linear-gradient(top, #6fafef, #3465a4);
+	background: -o-linear-gradient(top, #6fafef, #3465a4);
+	background: -ms-linear-gradient(top, #6fafef, #3465a4);
+	background: linear-gradient(top, #6fafef, #3465a4);
     border: none;
     border-radius: 3px;
-    color: white;
+    color: white !important;
     padding: 3px 5px;
     text-align: center;
     vertical-align: middle;
     text-decoration: none;
+    line-height: 100%;
     display: inline-block;
-    font-size: 16px;
-    line-height: 24px;
+    
     cursor: pointer;
     background-repeat: no-repeat;
     -webkit-transition-duration: 0.3s; /* Safari */
@@ -91,11 +114,21 @@ select:hover {
 
 .button:hover {
     background-color: #729fcf;
+    background: -webkit-gradient(linear, 0 0, 0 bottom, from(#82afef), to(#729fcf));
+	background: -moz-linear-gradient(top, #82afef, #729fcf);
+	background: -o-linear-gradient(top, #82afef, #729fcf);
+	background: -ms-linear-gradient(top, #82afef, #729fcf);
+	background: linear-gradient(top, #82afef, #729fcf);
     box-shadow: 3px 5px 8px 0 rgba(0,0,0,0.24);
 }
 
 .button:active {
     background-color: #3465a4;
+    background: -webkit-gradient(linear, 0 0, 0 bottom, from(#6fafff), to(#3465a4));
+	background: -moz-linear-gradient(top, #6fafef, #3465a4);
+	background: -o-linear-gradient(top, #6fafef, #3465a4);
+	background: -ms-linear-gradient(top, #6fafef, #3465a4);
+	background: linear-gradient(top, #6fafef, #3465a4);
     box-shadow: 3px 3px 6px 0 rgba(0,0,0,0.24);
 }
 
@@ -104,4 +137,30 @@ select:hover {
 	background-position: 3px center;
 	background-repeat: no-repeat;
 	background-size: 16px 16px;
+}
+
+.alert{
+	color: red !important;
+}
+
+.warning{
+	color: orange !important;
+}
+
+.ui-waiting-dlg{
+	background-color: transparent !important;
+	border: none !important;
+}
+
+.ui-waiting-dlg *{
+	background-color: transparent !important;
+	border: none !important;
+}
+
+.ui-hide{
+	display: none;
+}
+
+.no-wrap{
+	white-space: nowrap;
 }

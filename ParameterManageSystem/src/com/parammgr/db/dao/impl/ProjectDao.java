@@ -10,9 +10,18 @@ import com.parammgr.db.entity.Project;
 public class ProjectDao implements IProjectDao {
 	private SessionFactory sessionFactory;
 
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
+
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+
 	@Override
 	public Project getProjectById(String projectId) {
-		List<Project> projects = sessionFactory.getCurrentSession().createQuery("from Project where projectId=:projectId")
+		List<Project> projects = sessionFactory.getCurrentSession()
+				.createQuery("from Project where projectId=:projectId", Project.class)
 				.setParameter("projectId", projectId).getResultList();
 
 		if (!projects.isEmpty()) {
@@ -23,7 +32,8 @@ public class ProjectDao implements IProjectDao {
 
 	@Override
 	public Project getProjectByName(String projectName) {
-		List<Project> projects = sessionFactory.getCurrentSession().createQuery("from Project where projectName=:projectName")
+		List<Project> projects = sessionFactory.getCurrentSession()
+				.createQuery("from Project where projectName=:projectName", Project.class)
 				.setParameter("projectName", projectName).getResultList();
 
 		if (!projects.isEmpty()) {
@@ -31,10 +41,11 @@ public class ProjectDao implements IProjectDao {
 		}
 		return null;
 	}
-	
+
 	@Override
-	public List<Project> getProjectsByName(String projectName){
-		List<Project> projects = sessionFactory.getCurrentSession().createQuery("from Project where projectName like :projectName")
+	public List<Project> getProjectsByName(String projectName) {
+		List<Project> projects = sessionFactory.getCurrentSession()
+				.createQuery("from Project where projectName like :projectName", Project.class)
 				.setParameter("projectName", "%" + projectName + "%").getResultList();
 
 		return projects;
@@ -42,12 +53,13 @@ public class ProjectDao implements IProjectDao {
 
 	@Override
 	public void addProject(Project project) {
-		sessionFactory.getCurrentSession().save(project);
+		this.sessionFactory.getCurrentSession().save(project);
 	}
 
 	@Override
 	public void deleteProject(Project project) {
-		sessionFactory.getCurrentSession().delete(project);
+		this.sessionFactory.getCurrentSession().delete(project);
+		this.sessionFactory.getCurrentSession().flush();
 	}
 
 	@Override
@@ -60,28 +72,22 @@ public class ProjectDao implements IProjectDao {
 	@Override
 	public void deleteProjectByName(String projectName) {
 		Project project = this.getProjectByName(projectName);
-		if(null != project) {
-			sessionFactory.getCurrentSession().delete(project);
+		if (null != project) {
+			this.sessionFactory.getCurrentSession().delete(project);
+			this.sessionFactory.getCurrentSession().flush();
 		}
 	}
 
 	@Override
 	public void updateProject(Project project) {
-		sessionFactory.getCurrentSession().update(project);
+		this.sessionFactory.getCurrentSession().update(project);
 	}
 
 	@Override
 	public List<Project> getAllProjects() {
-		List<Project> projects = sessionFactory.getCurrentSession().createQuery("from Project").getResultList();
+		List<Project> projects = this.sessionFactory.getCurrentSession().createQuery("from Project", Project.class)
+				.getResultList();
 		return projects;
-	}
-
-	public SessionFactory getSessionFactory() {
-		return sessionFactory;
-	}
-
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
 	}
 
 }

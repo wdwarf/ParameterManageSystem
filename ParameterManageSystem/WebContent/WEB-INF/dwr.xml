@@ -5,22 +5,50 @@
 <dwr>
 	<allow>
 
+		<create creator="spring" javascript="userService">
+			<param name="beanName" value="userService" />
+		</create>
 		<create creator="spring" javascript="projectService">
 			<param name="beanName" value="projectService" />
 		</create>
 		<create creator="spring" javascript="dbStructService">
 			<param name="beanName" value="dbStructService" />
 		</create>
+		<create creator="spring" javascript="webStructService">
+			<param name="beanName" value="webStructService" />
+		</create>
+		<create creator="spring" javascript="snmpStructService">
+			<param name="beanName" value="snmpStructService" />
+		</create>
+		<create creator="spring" javascript="checkPointService">
+			<param name="beanName" value="checkPointService" />
+		</create>
 
 		<convert converter="bean" match="com.parammgr.db.entity.Project">
 		</convert>
-		<convert converter="bean" match="com.parammgr.db.entity.DBStructPK">
-		</convert>
-		<convert converter="bean" match="com.parammgr.db.entity.DBStructElementPK">
-		</convert>
 		<convert converter="bean" match="com.parammgr.db.entity.DBStruct">
 		</convert>
-		<convert converter="bean" match="com.parammgr.db.entity.DBStructElement">
+		<convert converter="bean" match="com.parammgr.db.entity.DBStructMember">
+		</convert>
+		<convert converter="bean" match="com.parammgr.db.entity.DBStructDefInstance">
+		</convert>
+		<convert converter="bean" match="com.parammgr.db.entity.WebStruct">
+		</convert>
+		<convert converter="bean" match="com.parammgr.db.entity.WebStructMember">
+		</convert>
+		<convert converter="bean" match="com.parammgr.db.entity.SnmpStruct">
+		</convert>
+		<convert converter="bean" match="com.parammgr.db.entity.SnmpStructMember">
+		</convert>
+		<convert converter="bean" match="com.parammgr.db.entity.CheckPoint">
+			<param name="exclude" value="checkPointData"></param>
+		</convert>
+		<convert converter="bean" match="com.parammgr.db.entity.User">
+		</convert>
+		
+		<convert match="java.lang.Exception" converter="exception">
+		</convert>
+		<convert match="java.lang.StackTraceElement" converter="bean">
 		</convert>
 	</allow>
 </dwr>

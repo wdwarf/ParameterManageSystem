@@ -8,12 +8,15 @@
     <class name="com.parammgr.db.entity.Project" table="Project">
         <cache usage="read-write"/>
         <id name="projectId">
-            <!-- <generator class="String"/> -->
+            <generator class="uuid"/>
         </id>
         
         <property name="projectName"/>
         <property name="comment"/>
         <property name="createDate"/>
+        
+        <many-to-one name="user" lazy="false" cascade="none" column="userId" unique="true" class="com.parammgr.db.entity.User">
+        </many-to-one>
     </class>
 
 </hibernate-mapping>

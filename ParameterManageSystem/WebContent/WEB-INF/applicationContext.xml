@@ -80,27 +80,86 @@
 
 
 	<!-- DAO -->
+	<bean name="userDao" class="com.parammgr.db.dao.impl.UserDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<bean name="projectDao" class="com.parammgr.db.dao.impl.ProjectDao">
-		<property name="sessionFactory" ref="sessionFactory">
-		</property>
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean name="dbStructDao" class="com.parammgr.db.dao.impl.DBStructDao">
-		<property name="sessionFactory" ref="sessionFactory">
-		</property>
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean name="webStructDao" class="com.parammgr.db.dao.impl.WebStructDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean name="snmpStructDao" class="com.parammgr.db.dao.impl.SnmpStructDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean name="checkPointDao" class="com.parammgr.db.dao.impl.CheckPointDao">
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
+
 	<!-- service -->
+	<bean name="userService" class="com.parammgr.db.service.impl.UserService">
+		<property name="userDao" ref="userDao" />
+	</bean>
+	<bean name="checkPointService" class="com.parammgr.db.service.impl.CheckPointService">
+		<property name="checkPointDao" ref="checkPointDao" />
+	</bean>
 	<bean name="projectService" class="com.parammgr.db.service.impl.ProjectService">
 		<property name="projectDao" ref="projectDao" />
 	</bean>
 	<bean name="dbStructService" class="com.parammgr.db.service.impl.DBStructService">
 		<property name="dbStructDao" ref="dbStructDao" />
+		<property name="checkPointService" ref="checkPointService" />
 	</bean>
+	<bean name="webStructService" class="com.parammgr.db.service.impl.WebStructService">
+		<property name="webStructDao" ref="webStructDao" />
+		<property name="checkPointService" ref="checkPointService" />
+	</bean>
+	<bean name="snmpStructService" class="com.parammgr.db.service.impl.SnmpStructService">
+		<property name="snmpStructDao" ref="snmpStructDao" />
+		<property name="checkPointService" ref="checkPointService" />
+	</bean>
+
 
 	<!-- actions -->
-	<bean name="dbStructEditorAction" class="com.parammgr.action.DBStructEditorAction">
-		<property name="projectService" ref="projectService">
-		</property>
+	<bean name="userMgmtAction" class="com.parammgr.action.UserMgmtAction" scope="prototype">
+		<property name="userService" ref="userService" />
+	</bean>
+	<bean name="loginAction" class="com.parammgr.action.LoginAction" scope="prototype">
+		<property name="userService" ref="userService" />
+	</bean>
+	<bean name="projectAction" class="com.parammgr.action.ProjectAction" scope="prototype">
+		<property name="projectService" ref="projectService" />
+	</bean>
+	<bean name="dbStructImportAction" class="com.parammgr.action.DBStructImportAction" scope="prototype">
+		<property name="dbStructService" ref="dbStructService" />
+		<property name="checkPointService" ref="checkPointService" />
+	</bean>
+	<bean name="dbStructExportAction" class="com.parammgr.action.DBStructExportAction" scope="prototype">
+		<property name="dbStructService" ref="dbStructService" />
+	</bean>
+	
+	<bean name="webStructImportAction" class="com.parammgr.action.WebStructImportAction" scope="prototype">
+		<property name="dbStructService" ref="dbStructService" />
+		<property name="webStructService" ref="webStructService" />
+		<property name="checkPointService" ref="checkPointService" />
+	</bean>
+	<bean name="webStructExportAction" class="com.parammgr.action.WebStructExportAction" scope="prototype">
+		<property name="dbStructService" ref="dbStructService" />
+		<property name="webStructService" ref="webStructService" />
 	</bean>
 
+	<bean name="snmpStructImportAction" class="com.parammgr.action.SnmpStructImportAction" scope="prototype">
+		<property name="dbStructService" ref="dbStructService" />
+		<property name="snmpStructService" ref="snmpStructService" />
+		<property name="checkPointService" ref="checkPointService" />
+	</bean>
+	<bean name="SnmpStructExportAction" class="com.parammgr.action.SnmpStructExportAction" scope="prototype">
+		<property name="dbStructService" ref="dbStructService" />
+		<property name="snmpStructService" ref="snmpStructService" />
+	</bean>
+	
 </beans>

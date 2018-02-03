@@ -4,10 +4,17 @@ import java.util.Date;
 
 public class Project {
 	private String projectId = "";
-	private 	String projectName = "";
+	private String projectName = "";
 	private String comment = "";
+	private User user;
 	private Date createDate = new Date();
 	
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
 	public String getProjectId() {
 		return projectId;
 	}

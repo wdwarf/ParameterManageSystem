@@ -1,21 +1,16 @@
 package com.parammgr.db.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.parammgr.db.dao.IProjectDao;
-import com.parammgr.db.dao.impl.ProjectDao;
 import com.parammgr.db.entity.Project;
 import com.parammgr.db.service.IProjectService;
-
 
 //@Service  
 //@Transactional
 public class ProjectService implements IProjectService {
-	//@Autowired
+	// @Autowired
 	private IProjectDao projectDao;
 
 	public IProjectDao getProjectDao() {
@@ -28,7 +23,13 @@ public class ProjectService implements IProjectService {
 
 	@Override
 	public List<Project> getAllProjects() {
-		return this.projectDao.getAllProjects();
+		try{
+			return this.projectDao.getAllProjects();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return new ArrayList<Project>();
 	}
 
 	@Override
@@ -40,34 +41,74 @@ public class ProjectService implements IProjectService {
 	public Project getProjectByName(String projectName) {
 		return this.projectDao.getProjectByName(projectName);
 	}
+
+	@Override
+	public List<Project> getProjectsByName(String projectName) {
+		try{
+			return this.projectDao.getProjectsByName(projectName);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return new ArrayList<Project>();
+	}
+
+	@Override
+	public void addProject(Project project) throws Exception {
+		try {
+			this.projectDao.addProject(project);
+		} catch (Exception e) {
+			throw new Exception("Add project failed, msg: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void deleteProject(Project project) throws Exception {
+		try {
+			this.projectDao.deleteProject(project);
+		} catch (Exception e) {
+			throw new Exception("Delete project failed, msg: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void deleteProjectById(String projectId) throws Exception {
+		try {
+			this.projectDao.deleteProjectById(projectId);
+		} catch (Exception e) {
+			throw new Exception("Delete project failed, msg: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void deleteProjectByName(String projectName) throws Exception {
+		try {
+			this.projectDao.deleteProjectByName(projectName);
+		} catch (Exception e) {
+			throw new Exception("Delete project failed, msg: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void updateProject(Project project)  throws Exception {
+		try {
+			this.projectDao.updateProject(project);
+		} catch (Exception e) {
+			throw new Exception("Add project failed, msg: " + e.getMessage());
+		}
+	}
 	
 	@Override
-	public List<Project> getProjectsByName(String projectName){
-		return this.projectDao.getProjectsByName(projectName);
-	}
-
-	@Override
-	public void addProject(Project project) {
-		this.projectDao.addProject(project);
-	}
-
-	@Override
-	public void deleteProject(Project project) {
-		this.projectDao.deleteProject(project);
-	}
-
-	@Override
-	public void deleteProjectById(String projectId) {
-		this.projectDao.deleteProjectById(projectId);
-	}
-
-	@Override
-	public void deleteProjectByName(String projectName) {
-		this.projectDao.deleteProjectByName(projectName);
-	}
-
-	@Override
-	public void updateProject(Project project) {
-		this.projectDao.updateProject(project);
+	public void updateProjectName(String projectId, String projectName)  throws Exception{
+		Project project = this.getProjectById(projectId);
+		Project projectByName = this.getProjectByName(projectName);
+		if(null != project 
+				&& null != projectByName 
+				&& project.getProjectId() != projectByName.getProjectId()){
+			throw new Exception("project [" + projectName + "] has exists");
+		}
+		
+		project.setProjectName(projectName);
+		this.updateProject(project);
 	}
 }

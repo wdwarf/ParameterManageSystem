@@ -8,30 +8,199 @@
 	<constant name="struts.devMode" value="true" />
 	<constant name="struts.xwork.chaining.copyErrors" value="true" />
     <constant name="struts.objectFactory" value="spring" />
-    
-	<package name="ParameterManageSystem" extends="struts-default">
+    <constant name="struts.multipart.maxSize" value="52428800" />
+
+	<package name="defPackage" extends="struts-default">
+
+		<interceptors>
+			<interceptor name="defLogin"
+				class="com.parammgr.interceptor.LoginInterceptor" />
+
+			<interceptor-stack name="defStack">
+				<interceptor-ref name="defLogin" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		
+		<default-interceptor-ref name="defStack" />
+
+		<global-results>
+			<result name="login" type="redirect">login</result>
+		</global-results>
 
 		<!-- 索引页 -->
-
-		<action name="*">
-			<result>/WEB-INF/pages/index.jsp</result>
+		<action name="*" class="projectAction">
+			<result type="redirect">index</result>
 		</action>
 		
-		<action name="index">
+		<action name="index" class="projectAction">
 			<result>/WEB-INF/pages/index.jsp</result>
 		</action>
 
-		<!-- 首页 -->
-		<action name="home">
-			<result>/WEB-INF/pages/home.jsp</result>
+		<!-- 登录页 -->
+		<action name="login" class="loginAction">
+			<result>/WEB-INF/pages/login.jsp</result>
 		</action>
 
+		<action name="doLogin" class="loginAction" method="doLogin">
+			<result name="success" type="redirect">index</result>
+			<result name="login">/WEB-INF/pages/login.jsp</result>
+			<result name="input">/WEB-INF/pages/login.jsp</result>
+			<result name="error">/WEB-INF/pages/login.jsp</result>
+		</action>
+
+		<action name="logout" class="loginAction" method="doLogout">
+			<result name="success" type="redirect">index</result>
+			<result name="login">/WEB-INF/pages/login.jsp</result>
+			<result name="input">/WEB-INF/pages/login.jsp</result>
+			<result name="error">/WEB-INF/pages/login.jsp</result>
+		</action>
+		
+	</package>
+    
+	<package name="ParameterManageSystem" extends="defPackage">
+
+		<!-- 首页 -->
+		<!-- projects -->
+		<action name="projects" class="projectAction">
+			<result>/WEB-INF/pages/projects.jsp</result>
+		</action>
+
+		<!-- project -->
+		<action name="project" class="projectAction">
+			<result>/WEB-INF/pages/project.jsp</result>
+		</action>
+
+		<action name="fileTrans" class="fileTransAction">
+			<result name="success" type="stream">
+				<param name="contentDisposition">attachment;filename="oam.db"</param>
+				<param name="inputName">downloadFile</param>
+			</result>
+		</action>
+
+		<action name="userMgmt" class="userMgmtAction">
+			<result name="success">/WEB-INF/pages/user/user.jsp</result>
+			<result name="error">/WEB-INF/pages/login.jsp</result>
+		</action>
 	</package>
 	
-	<package name="DBParameterEditor" extends="struts-default" namespace="/db">
-		<action name="dbStructEditor" class="dbStructEditorAction">
-			<result>/WEB-INF/pages/db/structEditor.jsp</result>
+	<!-- DB -->
+	<package name="DBParameterEditor" extends="defPackage" namespace="/db">
+	
+		<!-- dbProject -->
+		<action name="project" class="projectAction">
+			<result name="success">/WEB-INF/pages/db/dbProject.jsp</result>
 		</action>
+		
+		<action name="dbStructImport" class="dbStructImportAction">
+			<result name="success" type="chain">project</result>
+			<result name="error" type="chain">project</result>
+			<result name="input" type="chain">project</result>
+		</action>
+		
+		<action name="dbStructExportDB" class="dbStructExportAction" method="exportDbFile">
+			<result name="success" type="stream">
+				<param name="contentDisposition">attachment;filename="oam.db"</param>
+				<param name="inputName">dbFile</param>
+			</result>
+			<result name="error" type="chain">project</result>
+		</action>
+		
+		<action name="dbStructExportExcel" class="dbStructExportAction" method="exportExcelFile">
+			<result name="success" type="stream">
+				<param name="contentDisposition">attachment;filename="db.zip"</param>
+				<param name="inputName">excelFile</param>
+			</result>
+			<result name="error" type="chain">project</result>
+		</action>
+		
+		<action name="dbProjectAllStructsPreview" class="projectAction">
+			<result name="success">/WEB-INF/pages/db/dbProjectAllStructsPreview.jsp</result>
+		</action>
+		
+	</package>
+	
+	
+	<!-- WEB -->
+	<package name="WEBParameterEditor" extends="defPackage" namespace="/web">
+	
+		<!-- webProject -->
+		<action name="project" class="projectAction">
+			<result name="success">/WEB-INF/pages/web/webProject.jsp</result>
+		</action>
+		
+		<action name="webStructImport" class="webStructImportAction">
+			<result name="success" type="chain">project</result>
+			<result name="error" type="chain">project</result>
+			<result name="input" type="chain">project</result>
+		</action>
+		
+		<action name="webStructExportXml" class="webStructExportAction">
+			<result name="success" type="stream">
+				<param name="contentDisposition">attachment;filename="WebDataModel.xml"</param>
+				<param name="inputName">xmlFile</param>
+			</result>
+			<result name="error" type="chain">project</result>
+		</action>
+		
+		<action name="webStructExportExcel" class="webStructExportAction">
+			<result name="success" type="stream">
+				<param name="contentDisposition">attachment;filename="webstruct.zip"</param>
+				<param name="inputName">excelFile</param>
+			</result>
+			<result name="error" type="chain">project</result>
+		</action>
+		
+		<action name="webProjectAllStructsPreview" class="projectAction">
+			<result name="success">/WEB-INF/pages/web/webProjectAllStructsPreview.jsp</result>
+		</action>
+		<action name="compareWithDbStructs" class="projectAction">
+			<result name="success">/WEB-INF/pages/web/compareWithDbStructs.jsp</result>
+		</action>
+		
+	</package>
+	
+	
+	<!-- SNMP -->
+	<package name="SNMPParameterEditor" extends="defPackage" namespace="/snmp">
+	
+		<!-- snmpProject -->
+		<action name="project" class="projectAction">
+			<result name="success">/WEB-INF/pages/snmp/snmpProject.jsp</result>
+		</action>
+		
+		<!-- 导入 -->
+		<action name="snmpStructImport" class="snmpStructImportAction">
+			<result name="success" type="chain">project</result>
+			<result name="error" type="chain">project</result>
+			<result name="input" type="chain">project</result>
+		</action>
+		
+		<!-- 导出 -->
+		<action name="snmpStructExport" class="SnmpStructExportAction">
+			<result name="success" type="stream">
+				<param name="contentDisposition">attachment;filename="SnmpDataModel.xml"</param>
+				<param name="inputName">file</param>
+			</result>
+			<result name="error" type="chain">project</result>
+		</action>
+		
+		<!-- 概览 -->
+		<action name="snmpProjectAllStructsPreview" class="projectAction">
+			<result name="success">/WEB-INF/pages/snmp/snmpProjectAllStructsPreview.jsp</result>
+		</action>
+		
+	</package>
+	
+	
+	<!-- Tr069 -->
+	<package name="Tr069ParameterEditor" extends="defPackage" namespace="/tr069">
+	
+		<!-- tr069Project -->
+		<action name="project" class="projectAction">
+			<result name="success">/WEB-INF/pages/tr069/tr069Project.jsp</result>
+		</action>
+		
 	</package>
 	
 </struts>

@@ -9,9 +9,10 @@ public interface IProjectService {
 	public Project getProjectById(String projectId);
 	public Project getProjectByName(String projectName);
 	public List<Project> getProjectsByName(String projectName);
-	public void addProject(Project project);
-	public void deleteProject(Project project);
-	public void deleteProjectById(String projectId);
-	public void deleteProjectByName(String projectName);
-	public void updateProject(Project project);
+	public void addProject(Project project) throws Exception;
+	public void deleteProject(Project project) throws Exception;
+	public void deleteProjectById(String projectId) throws Exception;
+	public void deleteProjectByName(String projectName) throws Exception;
+	public void updateProject(Project project) throws Exception;
+	public void updateProjectName(String projectId, String projectName)  throws Exception;
 }

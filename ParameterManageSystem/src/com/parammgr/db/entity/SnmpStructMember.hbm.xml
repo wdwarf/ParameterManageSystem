@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="com.parammgr.db.entity.SnmpStructMember" table="SnmpStructMember">
+		<cache usage="read-write" />
+		<id name="snmpstructmemberId">
+            <generator class="uuid"/>
+        </id>
+
+		<property name="snmpstructId" />
+		<property name="elementName" />
+		<property name="structName" />
+		<property name="memberName" />
+		<property name="oid" />
+		<property name="primaryKey" />
+		<property name="writable" />
+		<property name="dataType" />
+		<property name="createDate" />
+	</class>
+
+</hibernate-mapping>

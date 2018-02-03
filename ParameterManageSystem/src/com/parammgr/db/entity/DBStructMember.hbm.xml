@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="com.parammgr.db.entity.DBStructMember" table="DBStructMember">
+		<cache usage="read-write" />
+		<id name="dbstructmemberId">
+            <generator class="uuid"/>
+        </id>
+
+		<property name="dbstructId" />
+		<property name="memberId" />
+		<property name="memberName" />
+		<property name="memberType" />
+		<property name="memberSize" />
+		<property name="primaryKey" />
+		<property name="defaultValue" />
+		<property name="valueRegex" />
+		<property name="refStruct" />
+		<property name="refMember" />
+		<property name="unique" column="isUnique" />
+		<property name="memo" />
+		<property name="createDate" />
+		
+		<list name="defInstances" lazy="false" inverse="true" cascade="all">
+			<key column="dbstructmemberId" />
+			<list-index column="instanceIndex" />
+			<one-to-many class="com.parammgr.db.entity.DBStructDefInstance" />
+		</list>
+	</class>
+
+</hibernate-mapping>

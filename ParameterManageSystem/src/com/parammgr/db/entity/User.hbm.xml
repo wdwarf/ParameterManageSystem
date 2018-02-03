@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="com.parammgr.db.entity.User" table="User">
+        <cache usage="read-write"/>
+        <id name="userId">
+            <generator class="uuid"/>
+        </id>
+        
+        <property name="userName"/>
+        <property name="nickName"/>
+        <property name="password"/>
+        <property name="createDate"/>
+    </class>
+
+</hibernate-mapping>

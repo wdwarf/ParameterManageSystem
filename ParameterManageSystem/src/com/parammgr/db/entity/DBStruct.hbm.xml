@@ -7,21 +7,21 @@
 
 	<class name="com.parammgr.db.entity.DBStruct" table="DBStruct">
 		<cache usage="read-write" />
-		<composite-id name="primaryKey" class="com.parammgr.db.entity.DBStructPK">
-			<key-property name="projectId" column="projectId" type="string"></key-property>
-			<key-property name="structId" column="structId" type="int"></key-property>
-		</composite-id>
+		<id name="dbstructId">
+			<generator class="uuid"/>
+		</id>
 
+		<property name="projectId" />
+		<property name="structId" />
 		<property name="structName" />
 		<property name="tempTable" />
 		<property name="createDate" />
 
-		<set name="elements" lazy="false" inverse="false" cascade="all">
+		<set name="members" lazy="false" inverse="true" cascade="all" order-by="memberId ASC">
 			<key>
-				<column name="projectId" />
-				<column name="structId" />
+				<column name="dbstructId" />
 			</key>
-			<one-to-many class="com.parammgr.db.entity.DBStructElement" />
+			<one-to-many class="com.parammgr.db.entity.DBStructMember" />
 		</set>
 	</class>
 

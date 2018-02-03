@@ -11,10 +11,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Parameter Manage System</title>
+<link rel="shortcut icon" type="image/x-icon" href="<%=basePath%>images/icon.ico" />
 </head>
 <body>
 	<%
-		response.sendRedirect(basePath + "home");
+		response.sendRedirect(basePath + "projects");
 	%>
 </body>
 </html>

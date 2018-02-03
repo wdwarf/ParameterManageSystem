@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="com.parammgr.db.entity.WebStructMember" table="WebStructMember">
+		<cache usage="read-write" />
+		<id name="webstructmemberId">
+            <generator class="uuid"/>
+        </id>
+
+		<property name="webstructId" />
+		<property name="memberId" />
+		<property name="memberName" />
+		<property name="memberCnName" />
+		<property name="primaryKey" />
+		<property name="defaultValue" />
+		<property name="webType" />
+		<property name="typeDesc" />
+		<property name="unit" />
+		<property name="valueRangeCn" />
+		<property name="valueRange" />
+		<property name="memberLevel" />
+		<property name="structLevel" />
+		<property name="canAddOrDelete" />
+		<property name="unique" column="isUnique" />
+		<property name="rebootEffective" />
+		<property name="setStatus" />
+		<property name="createDate" />
+	</class>
+
+</hibernate-mapping>

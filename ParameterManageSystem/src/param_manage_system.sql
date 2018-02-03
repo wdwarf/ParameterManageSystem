@@ -16,67 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `DBStruct`
---
-
-DROP TABLE IF EXISTS `DBStruct`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `DBStruct` (
-  `projectId` varchar(64) NOT NULL,
-  `structName` varchar(45) NOT NULL,
-  `structId` int(11) NOT NULL,
-  `tempTable` tinyint(4) DEFAULT '0',
-  `createDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`projectId`,`structId`),
-  CONSTRAINT `fk_DBStruct_1` FOREIGN KEY (`projectId`) REFERENCES `Project` (`projectId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `DBStruct`
---
-
-LOCK TABLES `DBStruct` WRITE;
-/*!40000 ALTER TABLE `DBStruct` DISABLE KEYS */;
-INSERT INTO `DBStruct` VALUES ('142129c1-8798-11e7-8482-525400bbd1a8','DeviceInfo',60001,0,'2017-08-24 00:23:28'),('142129c1-8798-11e7-8482-525400bbd1a8','test',60002,0,'2017-08-24 00:30:26');
-/*!40000 ALTER TABLE `DBStruct` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `DBStructElement`
---
-
-DROP TABLE IF EXISTS `DBStructElement`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `DBStructElement` (
-  `projectId` varchar(64) NOT NULL,
-  `structId` int(11) NOT NULL,
-  `elementId` int(11) NOT NULL,
-  `elementName` varchar(45) NOT NULL,
-  `elementType` varchar(45) NOT NULL,
-  `elementSize` int(11) NOT NULL,
-  `primaryKey` tinyint(4) DEFAULT '0',
-  `defaultValue` text,
-  `valueRegex` text,
-  `createDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`projectId`,`structId`,`elementId`),
-  CONSTRAINT `fk_DBStructElement_1` FOREIGN KEY (`projectId`, `structId`) REFERENCES `DBStruct` (`projectId`, `structId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `DBStructElement`
---
-
-LOCK TABLES `DBStructElement` WRITE;
-/*!40000 ALTER TABLE `DBStructElement` DISABLE KEYS */;
-INSERT INTO `DBStructElement` VALUES ('142129c1-8798-11e7-8482-525400bbd1a8',60001,600001001,'testElement','Char',64,0,NULL,NULL,'2017-08-24 00:24:28'),('142129c1-8798-11e7-8482-525400bbd1a8',60001,600001002,'elmt2','Uint32',4,0,NULL,NULL,'2017-08-24 00:26:18');
-/*!40000 ALTER TABLE `DBStructElement` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `Project`
 --
 
@@ -99,9 +38,188 @@ CREATE TABLE `Project` (
 
 LOCK TABLES `Project` WRITE;
 /*!40000 ALTER TABLE `Project` DISABLE KEYS */;
-INSERT INTO `Project` VALUES ('142129c1-8798-11e7-8482-525400bbd1a8','test','','2017-08-23 00:14:50');
 /*!40000 ALTER TABLE `Project` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `DBStruct`
+--
+
+DROP TABLE IF EXISTS `DBStruct`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `DBStruct` (
+  `dbstructId` varchar(64) NOT NULL,
+  `projectId` varchar(64) NOT NULL,
+  `structName` varchar(255) NOT NULL,
+  `structId` int(11) NOT NULL,
+  `tempTable` tinyint(4) DEFAULT '0',
+  `createDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`dbstructId`),
+  UNIQUE KEY(`projectId`, `structName`),
+  UNIQUE KEY(`projectId`, `structId`),
+  CONSTRAINT `fk_DBStruct_1` FOREIGN KEY (`projectId`) REFERENCES `Project` (`projectId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `DBStructMember`
+--
+
+DROP TABLE IF EXISTS `DBStructMember`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `DBStructMember` (
+  `dbstructmemberId` varchar(64) NOT NULL,
+  `dbstructId` varchar(64) NOT NULL,
+  `memberId` int(11) NOT NULL,
+  `memberName` varchar(255) NOT NULL,
+  `memberType` varchar(45) NOT NULL,
+  `memberSize` int(11) NOT NULL,
+  `primaryKey` tinyint(4) DEFAULT '0',
+  `defaultValue` text,
+  `valueRegex` text,
+  `refStruct` text,
+  `refMember` text,
+  `isUnique` tinyint(4) DEFAULT '0',
+  `memo` text,
+  `createDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`dbstructmemberId`),
+  UNIQUE KEY(`dbstructId`, `memberId`),
+  UNIQUE KEY(`dbstructId`, `memberName`),
+  CONSTRAINT `fk_DBStructMember_1` FOREIGN KEY (`dbstructId`) REFERENCES `DBStruct` (`dbstructId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table ``
+--
+
+DROP TABLE IF EXISTS `DBStructdefInstance`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `DBStructdefInstance` (
+  `dbstructdefinstanceId` varchar(64) NOT NULL,
+  `dbstructmemberId` varchar(64) NOT NULL,
+  `instanceIndex` int(11) NOT NULL,
+  `defValue` varchar(2048) DEFAULT NULL,
+  PRIMARY KEY (`dbstructdefinstanceId`),
+  KEY `dbstructmemberId` (`dbstructmemberId`),
+  CONSTRAINT `dbstructdefinstance_ibfk_1` FOREIGN KEY (`dbstructmemberId`) REFERENCES `dbstructmember` (`dbstructmemberId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table ``
+--
+
+LOCK TABLES `DBStructdefInstance` WRITE;
+/*!40000 ALTER TABLE `DBStructdefInstance` DISABLE KEYS */;
+/*!40000 ALTER TABLE `DBStructdefInstance` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `WebStruct`
+--
+
+DROP TABLE IF EXISTS `WebStruct`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `WebStruct` (
+  `webstructId` varchar(64) NOT NULL,
+  `projectId` varchar(64) NOT NULL,
+  `structName` varchar(255) NOT NULL,
+  `structCnName` varchar(255) NOT NULL,
+  `classifyName` varchar(255),
+  `structId` int(11) NOT NULL,
+  `tempTable` tinyint(4) DEFAULT '0',
+  `createDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`webstructId`),
+  UNIQUE KEY(`projectId`, `structName`),
+  UNIQUE KEY(`projectId`, `structId`),
+  CONSTRAINT `fk_WebStruct_1` FOREIGN KEY (`projectId`) REFERENCES `Project` (`projectId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `WebStructMember`
+--
+
+DROP TABLE IF EXISTS `WebStructMember`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `WebStructMember` (
+  `webstructmemberId` varchar(64) NOT NULL,
+  `webstructId` varchar(64) NOT NULL,
+  `memberId` int(11) NOT NULL,
+  `memberName` varchar(255) NOT NULL,
+  `memberCnName` varchar(255) NOT NULL,
+  `primaryKey` tinyint(4) DEFAULT '0',
+  `defaultValue` text,
+  `webType` int(11) NOT NULL,
+  `typeDesc` text,
+  `unit` text,
+  `valueRangeCn` text,
+  `valueRange` text,
+  `memberLevel` int(11),
+  `structLevel` int(11),
+  `canAddOrDelete` tinyint(4) DEFAULT '0',
+  `isUnique` tinyint(4) DEFAULT '0',
+  `rebootEffective` tinyint(4) DEFAULT '0',
+  `setStatus` text,
+  `createDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`webstructmemberId`),
+  UNIQUE KEY(`webstructId`, `memberId`),
+  UNIQUE KEY(`webstructId`, `memberName`),
+  CONSTRAINT `fk_WebStructMember_1` FOREIGN KEY (`webstructId`) REFERENCES `WebStruct` (`webstructId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+--
+-- Table structure for table `SnmpStruct`
+--
+
+DROP TABLE IF EXISTS `SnmpStruct`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `SnmpStruct` (
+  `snmpstructId` varchar(64) NOT NULL,
+  `projectId` varchar(64) NOT NULL,
+  `structName` varchar(255) NOT NULL,
+  `oid` varchar(255) NOT NULL,
+  `singleTable` tinyint(4) DEFAULT '0',
+  `createDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`snmpstructId`),
+  UNIQUE KEY(`projectId`, `structName`),
+  UNIQUE KEY(`projectId`, `oid`),
+  CONSTRAINT `fk_SnmpStruct_1` FOREIGN KEY (`projectId`) REFERENCES `Project` (`projectId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `SnmpStructMember`
+--
+
+DROP TABLE IF EXISTS `SnmpStructMember`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `SnmpStructMember` (
+  `snmpstructmemberId` varchar(64) NOT NULL,
+  `snmpstructId` varchar(64) NOT NULL,
+  `elementName` varchar(255) NOT NULL,
+  `structName` varchar(255) NOT NULL,
+  `memberName` varchar(255) NOT NULL,
+  `oid` int(11) NOT NULL,
+  `primaryKey` tinyint(4) DEFAULT '0',
+  `writable` tinyint(4) DEFAULT '1',
+  `dataType` varchar(16) NOT NULL,
+  `createDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`snmpstructmemberId`),
+  UNIQUE KEY(`snmpstructId`, `oid`),
+  UNIQUE KEY(`snmpstructId`, `elementName`),
+  UNIQUE KEY(`snmpstructId`, `structName`, `memberName`),
+  CONSTRAINT `fk_SnmpStructMember_1` FOREIGN KEY (`snmpstructId`) REFERENCES `SnmpStruct` (`snmpstructId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
